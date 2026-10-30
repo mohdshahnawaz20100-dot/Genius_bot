@@ -1,28 +1,36 @@
-# core/client.py
+import os
+import telebot
+
+# टेलीग्राम बॉट टोकन एनवायरनमेंट वेरिएबल से उठाएगा
+TOKEN = os.environ.get('BOT_TOKEN')
+bot = telebot.TeleBot(TOKEN)
 
 class PowerMuslimBot:
     def __init__(self):
-        print("Bot initialized successfully!")
-        # यहाँ आप अपना WhatsApp कनेक्शन सेटअप करेंगे
-        self.status = "Online"
+        print("POWER MUSLIM BOT Initialized!")
 
     def start(self):
-        print(f"Bot is now {self.status} and listening for messages...")
-        self.load_commands()
+        print("Bot is running... Listening for messages.")
+        
+        # स्टार्ट कमांड
+        @bot.message_handler(commands=['start'])
+        def send_welcome(message):
+            bot.reply_to(message, "✨ POWER MUSLIM BOT ✨\n\nAssalamu Alaikum! Main aapki khidmat mein hazir hoon. Commands dekhne ke liye ..status type karein.")
+        
+        # स्टेटस कमांड (आपके लिस्ट के हिसाब से)
+        @bot.message_handler(commands=['status'])
+        def send_status(message):
+            bot.reply_to(message, "🛡️ Bot Status: Online\nAll systems working perfectly.")
+            
+        # पिंग कमांड
+        @bot.message_handler(commands=['ping'])
+        def send_ping(message):
+            bot.reply_to(message, "Pong! 🏓 Bot active hai.")
 
-    def load_commands(self):
-        print("--- Loading Protection Commands ---")
-        print("..status, ..ping, ..limit, ..autoblock, ..allow, ..unallow, ..reset")
+        # यहाँ आप आगे और कमांड्स जोड़ सकते हैं (namaz, quran, etc.)
         
-        print("--- Loading Islamic Commands ---")
-        print("..namaz, ..nextnamaz, ..hijri, ..qibla, ..dua, ..zikr, ..tasbeeh")
-        print("..quran, ..hadith, ..ramadan, ..jumma")
-        
-        print("--- Loading Media & Other Commands ---")
-        print("..save, ..tr, ..shayari, ..bayan, ..animate")
-        
-        print("All commands loaded. Ready to work!")
+        # बॉट को चालू रखने के लिए
+        bot.infinity_polling()
 
-# यह फंक्शन main.py से कॉल होता है
 def build_application():
     return PowerMuslimBot()
